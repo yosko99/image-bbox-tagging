@@ -6,3 +6,36 @@ datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
 }
+
+model Tag {
+    id                String   @id @default(uuid())
+    instructions      String
+    imageURL          String?  @default("no-image.png")
+    objectsToAnnotate String[]
+    withLabels        Boolean
+    urgency           Urgency
+    createdAt         DateTime @default(now())
+}
+
+model CompletedTag {
+    id          Int          @id @default(autoincrement())
+    message     String
+    coordinates Coordinate[]
+}
+
+model Coordinate {
+    id             Int           @id @default(autoincrement())
+    width          Int
+    height         Int
+    x              Int
+    y              Int
+    label          String
+    CompletedTag   CompletedTag? @relation(fields: [completedTagId], references: [id])
+    completedTagId Int?
+}
+
+enum Urgency {
+    LOW
+    MEDIUM
+    HIGH
+}
