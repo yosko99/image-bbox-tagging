@@ -1,10 +1,18 @@
-import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 enum Urgency {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
+}
+
+export class Coordinate {
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+  label: string;
 }
 
 export class CreateTagRequest {
@@ -15,17 +23,26 @@ export class CreateTagRequest {
   instructions: string;
 
   @ApiProperty()
-  image?: Express.Multer.File;
+  image: Express.Multer.File;
 
-  @ApiProperty({ type: [String], required: false })
+  @ApiProperty({ type: [String] })
   objectsToAnnotate: string[];
-
-  @IsNotEmpty()
-  @IsBoolean()
-  @ApiProperty({ type: Boolean })
-  withLabels: boolean;
 
   @IsNotEmpty()
   @ApiProperty({ enum: Urgency })
   urgency: Urgency;
+}
+
+export class CompleteTagRequest {
+  @ApiProperty({ required: false })
+  message?: string;
+
+  @ApiProperty()
+  image: Express.Multer.File;
+
+  @ApiProperty({
+    type: Coordinate,
+    isArray: true,
+  })
+  coordinates: Coordinate[];
 }

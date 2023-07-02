@@ -10,7 +10,7 @@ datasource db {
 model Tag {
     id                String   @id @default(uuid())
     instructions      String
-    imageURL          String?  @default("no-image.png")
+    imageURL          String
     objectsToAnnotate String[]
     withLabels        Boolean
     urgency           Urgency
@@ -19,6 +19,7 @@ model Tag {
 
 model CompletedTag {
     id          Int          @id @default(autoincrement())
+    imageURL    String
     message     String
     coordinates Coordinate[]
 }

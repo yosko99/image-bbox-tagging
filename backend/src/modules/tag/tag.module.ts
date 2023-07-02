@@ -24,5 +24,10 @@ export class TagModule implements NestModule {
       path: '/tags',
       method: RequestMethod.POST,
     });
+
+    consumer.apply(CheckIfUploadsFolderExists).forRoutes({
+      path: '/tags/complete',
+      method: RequestMethod.POST,
+    });
   }
 }

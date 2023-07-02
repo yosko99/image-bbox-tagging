@@ -1,15 +1,18 @@
-import { CreateTagRequest } from 'src/dtos/tag.dto';
+import { CompleteTagRequest, CreateTagRequest } from 'src/dtos/tag.dto';
+import { ProcessingTagSortType } from 'src/types/tag.types';
 
 export interface TagService {
-  getProcessingTagByID(tagID: number);
+  getProcessingTagByID(tagID: string);
 
-  deleteProcessingTagByID(tagID: number);
+  deleteProcessingTagByID(tagID: string);
 
-  getAllProcessingTags(sortedBy?: string);
+  getAllProcessingTags(sortedBy?: ProcessingTagSortType);
 
   getAllProcessedTags();
 
-  createTag(request: CreateTagRequest);
+  createTag(request: CreateTagRequest, filename: string);
+
+  completeTag(tagID: string, request: CompleteTagRequest, filename: string);
 }
 
 export const TagService = Symbol('TagService');
