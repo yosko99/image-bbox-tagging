@@ -2,10 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Stage } from 'konva/lib/Stage';
-import { Image, Layer, Rect, Stage as CanvasStage, Circle } from 'react-konva';
+import {
+  Image,
+  Layer,
+  Rect,
+  Stage as CanvasStage,
+  Circle,
+  Text
+} from 'react-konva';
 import useImage from 'use-image';
 
 import HiddenCanvas from './HiddenCanvas';
+import generateUniqueId from '../../functions/generateUniqueId';
 import ILabel from '../../interfaces/Ilabel';
 
 interface Props {
@@ -13,10 +21,18 @@ interface Props {
   selectedLabel: string;
   width: number;
   height: number;
+  setLabels: React.Dispatch<React.SetStateAction<ILabel[]>>;
+  labels: ILabel[];
 }
 
-const MainCanvas = ({ imageURL, selectedLabel, width, height }: Props) => {
-  const [labels, setLabels] = useState<ILabel[]>([]);
+const MainCanvas = ({
+  imageURL,
+  selectedLabel,
+  width,
+  height,
+  labels,
+  setLabels
+}: Props) => {
   const [newLabel, setNewLabel] = useState<ILabel[]>([]);
   const mainCanvasRef = useRef<Stage>(null);
 
@@ -38,10 +54,10 @@ const MainCanvas = ({ imageURL, selectedLabel, width, height }: Props) => {
           y,
           width: 0,
           height: 0,
-          key: 0,
+          key: generateUniqueId(),
           text: selectedLabel,
-          textX: 0,
-          textY: 0
+          textX: x,
+          textY: y
         }
       ]);
     }
@@ -58,16 +74,15 @@ const MainCanvas = ({ imageURL, selectedLabel, width, height }: Props) => {
         y: sy,
         width: x - sx,
         height: y - sy,
-        key: labels.length + 1,
+        key: generateUniqueId(),
         text: selectedLabel,
         textX: sx > x ? x : sx,
         textY: sy > y ? y : sy
       };
       if (labelToAdd.width !== 0 && labelToAdd.height !== 0) {
-        labels.push(labelToAdd);
+        setLabels((labels) => [...labels, labelToAdd]);
       }
       setNewLabel([]);
-      setLabels(labels);
     }
   };
 
@@ -87,7 +102,7 @@ const MainCanvas = ({ imageURL, selectedLabel, width, height }: Props) => {
           y: sy,
           width: x - sx,
           height: y - sy,
-          key: 0,
+          key: generateUniqueId(),
           text: selectedLabel,
           textX: sx > x ? x : sx,
           textY: sy > y ? y : sy
@@ -96,7 +111,7 @@ const MainCanvas = ({ imageURL, selectedLabel, width, height }: Props) => {
     }
   };
 
-  const handleRemoveLabel = (key: number) => {
+  const handleRemoveLabel = (key: string) => {
     setLabels((annotation) =>
       annotation.filter((annotation) => annotation.key !== key)
     );
@@ -134,6 +149,12 @@ const MainCanvas = ({ imageURL, selectedLabel, width, height }: Props) => {
                   fill="transparent"
                   stroke="red"
                 />
+                <Text
+                  text={value.text}
+                  fontSize={20}
+                  x={value.textX}
+                  y={value.textY}
+                />
                 <Circle
                   width={15}
                   height={15}
@@ -157,7 +178,6 @@ const MainCanvas = ({ imageURL, selectedLabel, width, height }: Props) => {
         scaleX={scaleX}
         scaleY={scaleY}
         labels={labelsToDraw}
-        selectedLabel={selectedLabel}
       />
     </>
   );

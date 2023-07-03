@@ -4,7 +4,7 @@ interface ILabel {
   width: number;
   height: number;
   text: string;
-  key: number;
+  key: string;
   textX: number;
   textY: number;
 }

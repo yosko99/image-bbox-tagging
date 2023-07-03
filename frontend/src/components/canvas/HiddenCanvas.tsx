@@ -7,18 +7,11 @@ import ILabel from '../../interfaces/Ilabel';
 interface Props {
   labels: ILabel[];
   image: HTMLImageElement;
-  selectedLabel: string;
   scaleX: number;
   scaleY: number;
 }
 
-const HiddenCanvas = ({
-  labels,
-  image,
-  selectedLabel,
-  scaleX,
-  scaleY
-}: Props) => {
+const HiddenCanvas = ({ labels, image, scaleX, scaleY }: Props) => {
   const hiddenCanvasRef = useRef<Stage>(null);
 
   const handleExport = () => {
@@ -43,8 +36,7 @@ const HiddenCanvas = ({
           return (
             <React.Fragment key={index}>
               <Text
-                text={selectedLabel}
-                strokeWidth={30}
+                text={value.text}
                 fontSize={30}
                 x={value.textX * scaleX}
                 y={value.textY * scaleY}

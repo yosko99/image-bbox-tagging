@@ -1,9 +1,10 @@
 /* eslint-disable multiline-ternary */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Col, Row, Button, Form, Alert } from 'react-bootstrap';
 
 import LoadingPage from './LoadingPage';
+import AnnotationBox from '../components/boxes/AnnotationBox';
 import InfoBox from '../components/boxes/InfoBox';
 import UpNextBox from '../components/boxes/UpNextBox';
 import MainCanvas from '../components/canvas/MainCanvas';
@@ -13,7 +14,11 @@ import {
   getAllProcessingTagsRoute
 } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
+import ILabel from '../interfaces/Ilabel';
 import { ITag, Urgency } from '../interfaces/ITag';
+
+const CANVAS_WIDTH = 750;
+const CANVAS_HEIGHT = 750;
 
 const MainPage = () => {
   const { isLoading, data } = useFetch(
@@ -22,6 +27,7 @@ const MainPage = () => {
     true
   );
   const [selectedLabel, setSelectedLabel] = useState('');
+  const [labels, setLabels] = useState<ILabel[]>([]);
 
   const [currentTag, setCurrentTag] = useState<ITag>({
     createdAt: '',
@@ -84,8 +90,10 @@ const MainPage = () => {
                       </Alert>
                     ) : (
                       <MainCanvas
-                        height={750}
-                        width={750}
+                        labels={labels}
+                        setLabels={setLabels}
+                        height={CANVAS_HEIGHT}
+                        width={CANVAS_WIDTH}
                         selectedLabel={selectedLabel}
                         imageURL={PUBLIC_IMAGES_PREFIX + currentTag.imageURL}
                       />
@@ -95,7 +103,9 @@ const MainPage = () => {
                 <div className="d-flex justify-content-between px-5">
                   <div>
                     <Button variant="danger">Broken</Button>
-                    <Button variant="warning">Reset</Button>
+                    <Button variant="warning" onClick={() => setLabels([])}>
+                      Reset
+                    </Button>
                   </div>
                   <Button variant="info">Submit</Button>
                 </div>
@@ -115,6 +125,7 @@ const MainPage = () => {
         </Col>
         <Col lg={3}>
           <InfoBox tag={currentTag} />
+          <AnnotationBox labels={labels} />
         </Col>
       </Row>
     </div>

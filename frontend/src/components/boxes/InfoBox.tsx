@@ -19,9 +19,6 @@ const InfoBox = ({ tag }: Props) => {
           <p>Urgency: {tag.urgency}</p>
         </div>
       </div>
-      <div className="shadow fs-2 ms-2 mt-2 ps-2 mt-2 pb-2 h-50">
-        <p>Annotations</p>
-      </div>
     </React.Fragment>
   );
 };
