@@ -1,11 +1,13 @@
 /* eslint-disable multiline-ternary */
 import React, { useState } from 'react';
 
-import { Col, Row, Image, Button, Form } from 'react-bootstrap';
+import { Col, Row, Button, Form, Alert } from 'react-bootstrap';
 
 import LoadingPage from './LoadingPage';
 import InfoBox from '../components/boxes/InfoBox';
 import UpNextBox from '../components/boxes/UpNextBox';
+import MainCanvas from '../components/canvas/MainCanvas';
+import RadioLabels from '../components/RadioLabels';
 import {
   PUBLIC_IMAGES_PREFIX,
   getAllProcessingTagsRoute
@@ -19,6 +21,7 @@ const MainPage = () => {
     getAllProcessingTagsRoute(),
     true
   );
+  const [selectedLabel, setSelectedLabel] = useState('');
 
   const [currentTag, setCurrentTag] = useState<ITag>({
     createdAt: '',
@@ -54,18 +57,10 @@ const MainPage = () => {
         <Col lg={2}>
           <div className="shadow fs-1 ms-2 mt-2 ps-2 mt-2">
             <p>Objects</p>
-            <Form className="fs-3 pb-2">
-              {currentTag.objectsToAnnotate.length !== 0 &&
-                currentTag.objectsToAnnotate.map((label, index) => (
-                  <Form.Check
-                    key={index}
-                    label={label}
-                    type="radio"
-                    name="label"
-                    id={`label-${label}-1`}
-                  />
-                ))}
-            </Form>
+            <RadioLabels
+              labels={currentTag.objectsToAnnotate}
+              setSelectedLabel={setSelectedLabel}
+            />
           </div>
           <UpNextBox setCurrentTag={setCurrentTag} tags={tags} />
         </Col>
@@ -78,15 +73,24 @@ const MainPage = () => {
             ) : (
               <>
                 {currentTag.id === '' ? (
-                  <p className="text-center fs-1 pt-5">
+                  <Alert variant="info" className="text-center fs-1 m-5">
                     Select a tag from the left side
-                  </p>
+                  </Alert>
                 ) : (
-                  <Image
-                    fluid
-                    src={PUBLIC_IMAGES_PREFIX + currentTag.imageURL}
-                    className="p-5 pt-3 pb-2"
-                  />
+                  <div className="py-3 d-flex justify-content-center align-items-center">
+                    {selectedLabel === '' ? (
+                      <Alert variant="warning" className="fs-1">
+                        Select label first
+                      </Alert>
+                    ) : (
+                      <MainCanvas
+                        height={750}
+                        width={750}
+                        selectedLabel={selectedLabel}
+                        imageURL={PUBLIC_IMAGES_PREFIX + currentTag.imageURL}
+                      />
+                    )}
+                  </div>
                 )}
                 <div className="d-flex justify-content-between px-5">
                   <div>
