@@ -3,7 +3,7 @@ interface ILabel {
   y: number;
   width: number;
   height: number;
-  text: string;
+  label: string;
   key: string;
   textX: number;
   textY: number;

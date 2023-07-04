@@ -36,8 +36,9 @@ const HiddenCanvas = ({ labels, image, scaleX, scaleY }: Props) => {
           return (
             <React.Fragment key={index}>
               <Text
-                text={value.text}
-                fontSize={30}
+                text={value.label}
+                fontSize={15}
+                strokeWidth={1}
                 x={value.textX * scaleX}
                 y={value.textY * scaleY}
               />

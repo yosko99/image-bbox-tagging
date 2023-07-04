@@ -45,9 +45,10 @@ const MainCanvas = ({
   const scaleY = image?.height! / height;
 
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
+    // @ts-ignore
+    const { x, y } = event.target.getStage()!.getPointerPosition();
+
     if (newLabel.length === 0) {
-      // @ts-ignore
-      const { x, y } = event.target.getStage()!.getPointerPosition();
       setNewLabel([
         {
           x,
@@ -55,7 +56,7 @@ const MainCanvas = ({
           width: 0,
           height: 0,
           key: generateUniqueId(),
-          text: selectedLabel,
+          label: '',
           textX: x,
           textY: y
         }
@@ -75,7 +76,7 @@ const MainCanvas = ({
         width: x - sx,
         height: y - sy,
         key: generateUniqueId(),
-        text: selectedLabel,
+        label: selectedLabel,
         textX: sx > x ? x : sx,
         textY: sy > y ? y : sy
       };
@@ -103,7 +104,7 @@ const MainCanvas = ({
           width: x - sx,
           height: y - sy,
           key: generateUniqueId(),
-          text: selectedLabel,
+          label: selectedLabel,
           textX: sx > x ? x : sx,
           textY: sy > y ? y : sy
         }
@@ -150,8 +151,10 @@ const MainCanvas = ({
                   stroke="red"
                 />
                 <Text
-                  text={value.text}
-                  fontSize={20}
+                  text={value.label}
+                  stroke="red"
+                  fontSize={15}
+                  strokeWidth={1}
                   x={value.textX}
                   y={value.textY}
                 />

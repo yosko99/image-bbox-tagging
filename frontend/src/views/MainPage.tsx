@@ -7,6 +7,7 @@ import LoadingPage from './LoadingPage';
 import AnnotationBox from '../components/boxes/AnnotationBox';
 import InfoBox from '../components/boxes/InfoBox';
 import UpNextBox from '../components/boxes/UpNextBox';
+import BrokenImageButton from '../components/buttons/BrokenImageButton';
 import MainCanvas from '../components/canvas/MainCanvas';
 import RadioLabels from '../components/RadioLabels';
 import {
@@ -20,6 +21,16 @@ import { ITag, Urgency } from '../interfaces/ITag';
 const CANVAS_WIDTH = 750;
 const CANVAS_HEIGHT = 750;
 
+const defaultTagValues: ITag = {
+  createdAt: '',
+  id: '',
+  imageURL: '',
+  instructions: '',
+  objectsToAnnotate: [],
+  urgency: Urgency.LOW,
+  withLabels: false
+};
+
 const MainPage = () => {
   const { isLoading, data } = useFetch(
     'processing_tags',
@@ -29,15 +40,11 @@ const MainPage = () => {
   const [selectedLabel, setSelectedLabel] = useState('');
   const [labels, setLabels] = useState<ILabel[]>([]);
 
-  const [currentTag, setCurrentTag] = useState<ITag>({
-    createdAt: '',
-    id: '',
-    imageURL: '',
-    instructions: '',
-    objectsToAnnotate: [],
-    urgency: Urgency.LOW,
-    withLabels: false
-  });
+  const [currentTag, setCurrentTag] = useState<ITag>(defaultTagValues);
+
+  useEffect(() => {
+    setCurrentTag(defaultTagValues);
+  }, [data]);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -102,7 +109,7 @@ const MainPage = () => {
                 )}
                 <div className="d-flex justify-content-between px-5">
                   <div>
-                    <Button variant="danger">Broken</Button>
+                    <BrokenImageButton id={currentTag.id} />
                     <Button variant="warning" onClick={() => setLabels([])}>
                       Reset
                     </Button>

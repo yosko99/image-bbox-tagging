@@ -9,7 +9,7 @@ export const getAllProcessingTagsRoute = (sort?: 'urgency' | 'date') =>
 export const getProcessedTagsRoute = () => `${getTagsRoute()}/processed`;
 
 export const getProcessingTagByIDRoute = (id: string) =>
-  `${getTagsRoute()}/${id}`;
+  `${getTagsRoute()}/processing/${id}`;
 
 export const completeTagRoute = (id: string) =>
   `${getTagsRoute()}/complete/${id}`;

@@ -20,7 +20,7 @@ const AnnotationBox = ({ labels }: Props) => {
           style={{ backgroundColor: 'lightgray' }}
         >
           <p>
-            Object: <span>{label.text}</span>
+            Object: <span>{label.label}</span>
           </p>
           <p>
             Corner:{' '}
@@ -31,7 +31,7 @@ const AnnotationBox = ({ labels }: Props) => {
           <p>
             Size:{' '}
             <span>
-              {label.width}x{label.height}
+              {Math.abs(label.width)}x{Math.abs(label.height)}
             </span>
           </p>
         </div>
