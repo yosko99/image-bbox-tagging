@@ -10,28 +10,27 @@ import {
   Circle,
   Text
 } from 'react-konva';
-import useImage from 'use-image';
 
 import HiddenCanvas from './HiddenCanvas';
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../../constants/canvasSize';
 import generateUniqueId from '../../functions/generateUniqueId';
+import useGetImageAndScaling from '../../hooks/useGetImageAndScaling';
 import ILabel from '../../interfaces/Ilabel';
 
 interface Props {
   imageURL: string;
   selectedLabel: string;
-  width: number;
-  height: number;
   setLabels: React.Dispatch<React.SetStateAction<ILabel[]>>;
   labels: ILabel[];
+  hiddenCanvasRef: React.RefObject<Stage>;
 }
 
 const MainCanvas = ({
   imageURL,
   selectedLabel,
-  width,
-  height,
   labels,
-  setLabels
+  setLabels,
+  hiddenCanvasRef
 }: Props) => {
   const [newLabel, setNewLabel] = useState<ILabel[]>([]);
   const mainCanvasRef = useRef<Stage>(null);
@@ -39,10 +38,7 @@ const MainCanvas = ({
   const mouseX = useRef(0);
   const mouseY = useRef(0);
 
-  const [image] = useImage(imageURL, 'anonymous');
-
-  const scaleX = image?.width! / width;
-  const scaleY = image?.height! / height;
+  const { image } = useGetImageAndScaling(imageURL);
 
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
     // @ts-ignore
@@ -133,11 +129,11 @@ const MainCanvas = ({
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        width={width}
-        height={height}
+        width={CANVAS_WIDTH}
+        height={CANVAS_HEIGHT}
       >
         <Layer>
-          <Image width={width} height={height} image={image} />
+          <Image width={CANVAS_WIDTH} height={CANVAS_HEIGHT} image={image} />
           {labelsToDraw.map((value, index) => {
             return (
               <React.Fragment key={index}>
@@ -177,9 +173,8 @@ const MainCanvas = ({
         </Layer>
       </CanvasStage>
       <HiddenCanvas
-        image={image!}
-        scaleX={scaleX}
-        scaleY={scaleY}
+        hiddenCanvasRef={hiddenCanvasRef}
+        imageURL={imageURL}
         labels={labelsToDraw}
       />
     </>

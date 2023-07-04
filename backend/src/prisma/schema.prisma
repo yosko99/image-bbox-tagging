@@ -26,10 +26,10 @@ model CompletedTag {
 
 model Coordinate {
     id             Int           @id @default(autoincrement())
-    width          Int
-    height         Int
-    x              Int
-    y              Int
+    width          Float
+    height         Float
+    x              Float
+    y              Float
     label          String
     CompletedTag   CompletedTag? @relation(fields: [completedTagId], references: [id])
     completedTagId Int?

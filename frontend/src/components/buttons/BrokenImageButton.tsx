@@ -5,18 +5,22 @@ import { Button } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
 
 import { getProcessingTagByIDRoute } from '../../constants/apiRoutes';
+import defaultTagValues from '../../data/defaultTagValue';
+import { ITag } from '../../interfaces/ITag';
 
 interface Props {
   id: string;
+  setCurrentTag: React.Dispatch<React.SetStateAction<ITag>>;
 }
 
-const BrokenImageButton = ({ id }: Props) => {
+const BrokenImageButton = ({ id, setCurrentTag }: Props) => {
   const queryClient = useQueryClient();
 
   const handleClick = () => {
     if (window.confirm('Are you sure you want to delete this image?')) {
       axios.delete(getProcessingTagByIDRoute(id)).then((_data) => {
         queryClient.refetchQueries();
+        setCurrentTag(defaultTagValues);
       });
     }
   };

@@ -7,10 +7,16 @@ import { ITag } from '../../interfaces/ITag';
 
 interface Props {
   tags: ITag[];
+  setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
   setCurrentTag: React.Dispatch<React.SetStateAction<ITag>>;
 }
 
-const UpNextBox = ({ tags, setCurrentTag }: Props) => {
+const UpNextBox = ({ tags, setCurrentTag, setSelectedLabel }: Props) => {
+  const handleChangeImage = (index: number) => {
+    setCurrentTag(tags[index]);
+    setSelectedLabel('');
+  };
+
   return (
     <React.Fragment>
       <div
@@ -22,7 +28,7 @@ const UpNextBox = ({ tags, setCurrentTag }: Props) => {
           <Image
             className="p-3 pt-1 ms-0 ps-0"
             key={index}
-            onClick={() => setCurrentTag(tags[index])}
+            onClick={() => handleChangeImage(index)}
             role="button"
             src={PUBLIC_IMAGES_PREFIX + tag.imageURL}
             fluid

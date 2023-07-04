@@ -1,7 +1,8 @@
 /* eslint-disable multiline-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Col, Row, Button, Form, Alert } from 'react-bootstrap';
+import { Stage } from 'konva/lib/Stage';
+import { Col, Row, Button, Alert } from 'react-bootstrap';
 
 import LoadingPage from './LoadingPage';
 import AnnotationBox from '../components/boxes/AnnotationBox';
@@ -9,27 +10,13 @@ import InfoBox from '../components/boxes/InfoBox';
 import UpNextBox from '../components/boxes/UpNextBox';
 import BrokenImageButton from '../components/buttons/BrokenImageButton';
 import MainCanvas from '../components/canvas/MainCanvas';
-import RadioLabels from '../components/RadioLabels';
-import {
-  PUBLIC_IMAGES_PREFIX,
-  getAllProcessingTagsRoute
-} from '../constants/apiRoutes';
+import CompleteLabelingForm from '../components/forms/CompleteLabelingForm';
+import RadioInputs from '../components/inputs/RadioInputs';
+import { getAllProcessingTagsRoute } from '../constants/apiRoutes';
+import defaultTagValues from '../data/defaultTagValue';
 import useFetch from '../hooks/useFetch';
 import ILabel from '../interfaces/Ilabel';
-import { ITag, Urgency } from '../interfaces/ITag';
-
-const CANVAS_WIDTH = 750;
-const CANVAS_HEIGHT = 750;
-
-const defaultTagValues: ITag = {
-  createdAt: '',
-  id: '',
-  imageURL: '',
-  instructions: '',
-  objectsToAnnotate: [],
-  urgency: Urgency.LOW,
-  withLabels: false
-};
+import { ITag } from '../interfaces/ITag';
 
 const MainPage = () => {
   const { isLoading, data } = useFetch(
@@ -39,12 +26,13 @@ const MainPage = () => {
   );
   const [selectedLabel, setSelectedLabel] = useState('');
   const [labels, setLabels] = useState<ILabel[]>([]);
+  const hiddenCanvasRef = useRef<Stage>(null);
 
   const [currentTag, setCurrentTag] = useState<ITag>(defaultTagValues);
 
   useEffect(() => {
-    setCurrentTag(defaultTagValues);
-  }, [data]);
+    setLabels([]);
+  }, [currentTag.imageURL]);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -69,13 +57,18 @@ const MainPage = () => {
       <Row>
         <Col lg={2}>
           <div className="shadow fs-1 ms-2 mt-2 ps-2 mt-2">
-            <p>Objects</p>
-            <RadioLabels
+            <p>Labels</p>
+            <RadioInputs
+              selectedLabel={selectedLabel}
               labels={currentTag.objectsToAnnotate}
               setSelectedLabel={setSelectedLabel}
             />
           </div>
-          <UpNextBox setCurrentTag={setCurrentTag} tags={tags} />
+          <UpNextBox
+            setSelectedLabel={setSelectedLabel}
+            setCurrentTag={setCurrentTag}
+            tags={tags}
+          />
         </Col>
         <Col lg={7}>
           <div className="shadow">
@@ -98,33 +91,34 @@ const MainPage = () => {
                     ) : (
                       <MainCanvas
                         labels={labels}
+                        hiddenCanvasRef={hiddenCanvasRef}
                         setLabels={setLabels}
-                        height={CANVAS_HEIGHT}
-                        width={CANVAS_WIDTH}
                         selectedLabel={selectedLabel}
-                        imageURL={PUBLIC_IMAGES_PREFIX + currentTag.imageURL}
+                        imageURL={currentTag.imageURL}
                       />
                     )}
                   </div>
                 )}
                 <div className="d-flex justify-content-between px-5">
                   <div>
-                    <BrokenImageButton id={currentTag.id} />
+                    <BrokenImageButton
+                      setCurrentTag={setCurrentTag}
+                      id={currentTag.id}
+                    />
                     <Button variant="warning" onClick={() => setLabels([])}>
                       Reset
                     </Button>
                   </div>
-                  <Button variant="info">Submit</Button>
                 </div>
                 <div className="px-5 mt-3 pb-2">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlTextarea1"
-                  >
-                    <Form.Label className="fs-4">Message:</Form.Label>
-                    <hr className="m-0 mb-2" />
-                    <Form.Control as="textarea" rows={3} />
-                  </Form.Group>
+                  {currentTag.imageURL !== '' && (
+                    <CompleteLabelingForm
+                      setCurrentTag={setCurrentTag}
+                      hiddenCanvasRef={hiddenCanvasRef}
+                      id={currentTag.id}
+                      labels={labels}
+                    />
+                  )}
                 </div>
               </>
             )}
@@ -132,7 +126,9 @@ const MainPage = () => {
         </Col>
         <Col lg={3}>
           <InfoBox tag={currentTag} />
-          <AnnotationBox labels={labels} />
+          {currentTag.imageURL !== '' && (
+            <AnnotationBox imageURL={currentTag.imageURL} labels={labels} />
+          )}
         </Col>
       </Row>
     </div>

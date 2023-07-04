@@ -4,10 +4,11 @@ import { Form } from 'react-bootstrap';
 
 interface Props {
   labels: string[];
+  selectedLabel: string;
   setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const RadioLabels = ({ labels, setSelectedLabel }: Props) => {
+const RadioInputs = ({ labels, setSelectedLabel, selectedLabel }: Props) => {
   const handleChange = (e: unknown) => {
     const value = ((e as HTMLFormElement).target as unknown as HTMLInputElement)
       .value;
@@ -23,6 +24,7 @@ const RadioLabels = ({ labels, setSelectedLabel }: Props) => {
             value={label}
             label={label}
             type="radio"
+            checked={selectedLabel === label}
             name="label"
             id={`label-${label}-1`}
           />
@@ -31,4 +33,4 @@ const RadioLabels = ({ labels, setSelectedLabel }: Props) => {
   );
 };
 
-export default RadioLabels;
+export default RadioInputs;

@@ -25,7 +25,7 @@ export class TagServiceImpl implements TagService {
           height: Number(request.coordinates[i].height),
           x: Number(request.coordinates[i].x),
           y: Number(request.coordinates[i].y),
-          label: request.coordinates[i].label && '',
+          label: request.coordinates[i].label,
         });
       }
 
@@ -34,7 +34,9 @@ export class TagServiceImpl implements TagService {
           imageURL: filename,
           message: request.message,
           coordinates: {
-            createMany: { data: coordinates },
+            createMany: {
+              data: coordinates,
+            },
           },
         },
       });

@@ -1,27 +1,18 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import { Stage } from 'konva/lib/Stage';
 import { Image, Layer, Rect, Stage as CanvasStage, Text } from 'react-konva';
 
+import useGetImageAndScaling from '../../hooks/useGetImageAndScaling';
 import ILabel from '../../interfaces/Ilabel';
 interface Props {
   labels: ILabel[];
-  image: HTMLImageElement;
-  scaleX: number;
-  scaleY: number;
+  imageURL: string;
+  hiddenCanvasRef: React.RefObject<Stage>;
 }
 
-const HiddenCanvas = ({ labels, image, scaleX, scaleY }: Props) => {
-  const hiddenCanvasRef = useRef<Stage>(null);
-
-  const handleExport = () => {
-    fetch(hiddenCanvasRef.current!.toDataURL())
-      .then((res) => res.blob())
-      .then((blob) => {
-        const file = new File([blob], 'File name.jpg', { type: 'image/jpeg' });
-        // setImageFile(file);
-      });
-  };
+const HiddenCanvas = ({ labels, imageURL, hiddenCanvasRef }: Props) => {
+  const { image, scaleX, scaleY } = useGetImageAndScaling(imageURL);
 
   return (
     <CanvasStage
@@ -37,7 +28,8 @@ const HiddenCanvas = ({ labels, image, scaleX, scaleY }: Props) => {
             <React.Fragment key={index}>
               <Text
                 text={value.label}
-                fontSize={15}
+                fontSize={30}
+                stroke="red"
                 strokeWidth={1}
                 x={value.textX * scaleX}
                 y={value.textY * scaleY}

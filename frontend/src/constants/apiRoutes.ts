@@ -11,5 +11,5 @@ export const getProcessedTagsRoute = () => `${getTagsRoute()}/processed`;
 export const getProcessingTagByIDRoute = (id: string) =>
   `${getTagsRoute()}/processing/${id}`;
 
-export const completeTagRoute = (id: string) =>
+export const getCompleteTagRoute = (id: string) =>
   `${getTagsRoute()}/complete/${id}`;
