@@ -31,7 +31,7 @@ model Coordinate {
     x              Float
     y              Float
     label          String
-    CompletedTag   CompletedTag? @relation(fields: [completedTagId], references: [id])
+    CompletedTag   CompletedTag? @relation(fields: [completedTagId], references: [id], onDelete: Cascade)
     completedTagId Int?
 }
 

@@ -81,7 +81,19 @@ export class TagServiceImpl implements TagService {
   }
 
   async getAllProcessedTags() {
-    return await this.prisma.completedTag.findMany({});
+    return await this.prisma.completedTag.findMany({
+      include: {
+        coordinates: {
+          select: {
+            x: true,
+            y: true,
+            width: true,
+            height: true,
+            label: true,
+          },
+        },
+      },
+    });
   }
 
   async createTag(
