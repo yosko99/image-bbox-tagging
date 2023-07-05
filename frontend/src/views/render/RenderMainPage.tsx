@@ -12,6 +12,7 @@ import SortButtons from '../../components/buttons/SortButtons';
 import MainCanvas from '../../components/canvas/MainCanvas';
 import CompleteLabelingForm from '../../components/forms/CompleteLabelingForm';
 import RadioInputs from '../../components/inputs/RadioInputs';
+import Header from '../../components/utils/Header';
 import defaultTagValues from '../../data/defaultTagValue';
 import ILabel from '../../interfaces/Ilabel';
 import { ITag } from '../../interfaces/ITag';
@@ -35,14 +36,13 @@ const RenderMainPage = ({ tags }: Props) => {
 
   useEffect(() => {
     setTags(tags);
-  }, []);
+  }, [tags.length]);
 
   return (
     <div>
-      <div className="bg-dark w-100 text-white d-flex align-items-center py-2 justify-content-between px-3 fs-3 m-0">
-        <p className="m-0">Image bbox tagging</p>
+      <Header>
         <SortButtons setTags={setTags} setAreTagsSorted={setAreTagsSorted} />
-      </div>
+      </Header>
       <Row>
         <Col lg={2}>
           <div className="shadow fs-1 ms-2 mt-2 ps-2 mt-2">

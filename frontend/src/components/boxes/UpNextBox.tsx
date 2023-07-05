@@ -33,7 +33,7 @@ const UpNextBox = ({
   return (
     <React.Fragment>
       <div
-        className="shadow fs-1 ms-2 mt-2 ps-2 mt-2 d-flex justify-content-center align-items-center flex-column"
+        className="shadow fs-1 ms-2 mt-2 ps-2 mt-2 d-flex align-items-center flex-column"
         style={{ height: '700px', overflow: 'scroll' }}
       >
         <p>Up next</p>
