@@ -3,6 +3,7 @@ import React from 'react';
 import { Stage } from 'konva/lib/Stage';
 import { Image, Layer, Rect, Stage as CanvasStage, Text } from 'react-konva';
 
+import { CANVAS_WIDTH } from '../../constants/canvasSize';
 import useGetImageAndScaling from '../../hooks/useGetImageAndScaling';
 import ILabel from '../../interfaces/Ilabel';
 interface Props {
@@ -13,6 +14,9 @@ interface Props {
 
 const HiddenCanvas = ({ labels, imageURL, hiddenCanvasRef }: Props) => {
   const { image, scaleX, scaleY } = useGetImageAndScaling(imageURL);
+
+  const baseFontSize = 30;
+  const dynamicFontSize = Math.round(baseFontSize * (CANVAS_WIDTH / 1000));
 
   return (
     <CanvasStage
@@ -28,7 +32,7 @@ const HiddenCanvas = ({ labels, imageURL, hiddenCanvasRef }: Props) => {
             <React.Fragment key={index}>
               <Text
                 text={value.label}
-                fontSize={30}
+                fontSize={dynamicFontSize}
                 stroke="red"
                 strokeWidth={1}
                 x={value.textX * scaleX}

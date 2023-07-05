@@ -19,6 +19,10 @@ export class TagServiceImpl implements TagService {
       const currentTag = await this.retrieveProcessingTag(tagID);
       const coordinates: ICoordinate[] = [];
 
+      if (request.coordinates === undefined) {
+        throw new HttpException({ message: 'No labels provided' }, 400);
+      }
+
       for (let i = 0; i < request.coordinates.length; i++) {
         coordinates.push({
           width: Number(request.coordinates[i].width),
@@ -107,7 +111,7 @@ export class TagServiceImpl implements TagService {
           instructions,
           imageURL: filename,
           objectsToAnnotate,
-          withLabels: objectsToAnnotate.length !== 0,
+          withLabels: objectsToAnnotate !== undefined,
         },
       });
     } catch (error) {

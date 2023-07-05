@@ -7,7 +7,7 @@ const defaultTagValues: ITag = {
   instructions: '',
   objectsToAnnotate: [],
   urgency: Urgency.LOW,
-  withLabels: false
+  withLabels: true
 };
 
 export default defaultTagValues;

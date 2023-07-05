@@ -11,6 +11,7 @@ import BrokenImageButton from '../../components/buttons/BrokenImageButton';
 import SortButtons from '../../components/buttons/SortButtons';
 import MainCanvas from '../../components/canvas/MainCanvas';
 import CompleteLabelingForm from '../../components/forms/CompleteLabelingForm';
+import LabelInput from '../../components/inputs/LabelInput';
 import RadioInputs from '../../components/inputs/RadioInputs';
 import Header from '../../components/utils/Header';
 import defaultTagValues from '../../data/defaultTagValue';
@@ -47,11 +48,18 @@ const RenderMainPage = ({ tags }: Props) => {
         <Col lg={2}>
           <div className="shadow fs-1 ms-2 mt-2 ps-2 mt-2">
             <p>Labels</p>
-            <RadioInputs
-              selectedLabel={selectedLabel}
-              labels={currentTag.objectsToAnnotate}
-              setSelectedLabel={setSelectedLabel}
-            />
+            {currentTag.withLabels ? (
+              <RadioInputs
+                selectedLabel={selectedLabel}
+                labels={currentTag.objectsToAnnotate}
+                setSelectedLabel={setSelectedLabel}
+              />
+            ) : (
+              <LabelInput
+                selectedLabel={selectedLabel}
+                setSelectedLabel={setSelectedLabel}
+              />
+            )}
           </div>
           <UpNextBox
             areTagsSorted={areTagsSorted}
@@ -71,13 +79,13 @@ const RenderMainPage = ({ tags }: Props) => {
               <>
                 {currentTag.id === '' ? (
                   <Alert variant="info" className="text-center fs-1 m-5">
-                    Select a tag from the left side
+                    Select a image from the left side
                   </Alert>
                 ) : (
                   <div className="py-3 d-flex justify-content-center align-items-center">
                     {selectedLabel === '' ? (
                       <Alert variant="warning" className="fs-1">
-                        Select label first
+                        Select or write a label from the left side
                       </Alert>
                     ) : (
                       <MainCanvas
