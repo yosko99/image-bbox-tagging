@@ -1,19 +1,18 @@
+/* eslint-disable multiline-ternary */
 import React from 'react';
 
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Alert, Col, Container, Row } from 'react-bootstrap';
 
+import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
+import LabeledImageCard from '../components/cards/LabeledImageCard';
 import Header from '../components/utils/Header';
-import {
-  PROXY_URL,
-  PUBLIC_IMAGES_PREFIX,
-  getProcessedTagsRoute
-} from '../constants/apiRoutes';
+import { getProcessedTagsRoute } from '../constants/apiRoutes';
 import useFetch from '../hooks/useFetch';
 import ILabeledImage from '../interfaces/ILabeledImage';
 
 const LabeledImagesPage = () => {
-  const { isLoading, data } = useFetch(
+  const { isLoading, data, error } = useFetch(
     'processed_tags',
     getProcessedTagsRoute(),
     true
@@ -23,35 +22,35 @@ const LabeledImagesPage = () => {
     return <LoadingPage />;
   }
 
+  if (error) {
+    return <ErrorPage />;
+  }
+
   const labeledImages = data as ILabeledImage[];
 
   return (
     <div>
       <Header />
       <Container>
-        <Row className="mt-3">
-          {labeledImages.map((labeledImage, index) => (
-            <Col key={index} className="p-2">
-              <Card style={{ width: '18rem' }}>
-                <a
-                  href={
-                    PROXY_URL + PUBLIC_IMAGES_PREFIX + labeledImage.imageURL
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Card.Img
-                    variant="top"
-                    src={PUBLIC_IMAGES_PREFIX + labeledImage.imageURL}
-                  />
-                </a>
-                <Card.Body>
-                  <Card.Text>{labeledImage.message}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        {labeledImages.length === 0 ? (
+          <Alert
+            className="mt-5 display-5 text-center shadow-lg"
+            variant="info"
+          >
+            No labeled images yet
+          </Alert>
+        ) : (
+          <Row className="mt-3">
+            {labeledImages.map((labeledImage, index) => (
+              <Col key={index} className="p-2">
+                <LabeledImageCard
+                  imageURL={labeledImage.imageURL}
+                  message={labeledImage.message}
+                />
+              </Col>
+            ))}
+          </Row>
+        )}
       </Container>
     </div>
   );
