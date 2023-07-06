@@ -3,6 +3,7 @@
 This project was inspired after watching the following [video](https://www.youtube.com/watch?v=HTXTVfBCeSY).
 
 The project
+- Allows users to upload image from the GUI
 - Allows users to upload image after hitting the ``/api/tags`` endpoint and sending ``formData`` request, containing (``image``,``instructions``,``urgency`` and ```optional``` ``objectsToAnnotate``). If no annotating labels are provided in the request, the GUI allows creating customs labels for the images.
 - Has frontend GUI, which allows users to label images and delete images
 - Has alternative page, showing all the labeled images so far
@@ -71,6 +72,9 @@ npm run client - start frontend side
 
 ### Main page
 ![Screenshot from 2023-07-05 15-43-07](https://github.com/yosko99/image-bbox-tagging/assets/80975936/180fd0a8-76f0-4ed5-93e1-909ed07fda50)
+
+### Upload image form
+![image](https://github.com/yosko99/image-bbox-tagging/assets/80975936/1e2f5ea7-54e0-4061-8aea-cabd8d3211e3)
 
 ### Labeled images page
 ![image](https://github.com/yosko99/image-bbox-tagging/assets/80975936/2eb08d5d-9d84-4815-8cb2-ddb5c66dd4d5)
