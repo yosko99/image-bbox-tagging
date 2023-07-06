@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Stage } from 'konva/lib/Stage';
 import { Alert, Button, Col, Row } from 'react-bootstrap';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 import AnnotationBox from '../../components/boxes/AnnotationBox';
 import InfoBox from '../../components/boxes/InfoBox';
@@ -11,8 +12,10 @@ import BrokenImageButton from '../../components/buttons/BrokenImageButton';
 import SortButtons from '../../components/buttons/SortButtons';
 import MainCanvas from '../../components/canvas/MainCanvas';
 import CompleteLabelingForm from '../../components/forms/CompleteLabelingForm';
+import UploadImageForm from '../../components/forms/UploadImageForm';
 import LabelInput from '../../components/inputs/LabelInput';
 import RadioInputs from '../../components/inputs/RadioInputs';
+import CustomModal from '../../components/utils/CustomModal';
 import Header from '../../components/utils/Header';
 import defaultTagValues from '../../data/defaultTagValue';
 import ILabel from '../../interfaces/Ilabel';
@@ -42,6 +45,11 @@ const RenderMainPage = ({ tags }: Props) => {
   return (
     <div>
       <Header>
+        <CustomModal
+          activateButtonText="Upload image"
+          body={<UploadImageForm />}
+          title="Upload image"
+        />
         <SortButtons setTags={setTags} setAreTagsSorted={setAreTagsSorted} />
       </Header>
       <Row>
@@ -84,9 +92,14 @@ const RenderMainPage = ({ tags }: Props) => {
                 ) : (
                   <div className="py-3 d-flex justify-content-center align-items-center">
                     {selectedLabel === '' ? (
-                      <Alert variant="warning" className="fs-1">
-                        Select or write a label from the left side
-                      </Alert>
+                      <>
+                        <p>
+                          <AiOutlineArrowLeft size={50} className="me-5" />
+                        </p>
+                        <Alert variant="warning" className="fs-1">
+                          Select or write a label from the left side
+                        </Alert>
+                      </>
                     ) : (
                       <MainCanvas
                         labels={labels}
