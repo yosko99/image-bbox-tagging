@@ -1,10 +1,10 @@
 import { CompleteTagRequest, CreateTagRequest } from 'src/dtos/tag.dto';
 import { TagService } from './tag.service';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { ProcessingTagSortType } from 'src/types/tag.types';
 import deleteImage from 'src/functions/deleteImage';
 import ICoordinate from 'src/interfaces/ICoordinate';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TagServiceImpl implements TagService {

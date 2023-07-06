@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Card } from 'react-bootstrap';
 
-import { PROXY_URL, PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
+import { PUBLIC_IMAGES_PREFIX } from '../../constants/apiRoutes';
 
 interface Props {
   imageURL: string;
@@ -13,7 +13,7 @@ const LabeledImageCard = ({ imageURL, message }: Props) => {
   return (
     <Card style={{ width: '18rem' }}>
       <a
-        href={PROXY_URL + PUBLIC_IMAGES_PREFIX + imageURL}
+        href={PUBLIC_IMAGES_PREFIX + imageURL}
         target="_blank"
         rel="noreferrer"
       >

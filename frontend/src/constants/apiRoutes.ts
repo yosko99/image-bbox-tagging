@@ -1,8 +1,8 @@
 const API_PREFIX = '/api/';
-export const PUBLIC_IMAGES_PREFIX = '/public/';
 export const PROXY_URL = 'http://localhost:5000';
+export const PUBLIC_IMAGES_PREFIX = PROXY_URL + '/public/';
 
-export const getTagsRoute = () => API_PREFIX + 'tags';
+export const getTagsRoute = () => PROXY_URL + API_PREFIX + 'tags';
 
 export const getAllProcessingTagsRoute = (sort?: 'urgency' | 'date') =>
   `${getTagsRoute()}/processing?sort=${sort}`;

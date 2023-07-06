@@ -7,11 +7,11 @@ import {
 import { TagController } from './tag.controller';
 
 import { TagService } from './tag.service';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 import { TagServiceImpl } from './tag.service.impl';
 
 import { CheckIfUploadsFolderExists } from 'src/middleware/utils/checkIfUploadsFolderExists.middleware';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
   imports: [],

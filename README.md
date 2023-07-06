@@ -19,13 +19,9 @@ The project
 
 ## Instructions (with Docker)
 
-Just make sure the `proxy` field in `/frontend/package.json` is set to `http://backend:5000/`. </br>
-
-Next run `docker-compose up` in the main directory, it should do the work for you. Access the app on `http://localhost:3000`
+In the main directory run `docker-compose build`, after the build is done run `docker-compose up` , it should do the work for you. Access the app on `http://localhost:3000`
 
 ## Instructions (without Docker)
-
-Make sure the `proxy` field in `/frontend/package.json` is set to `http://localhost:5000/`.
 
 After cloning the repository go to the main directory and run the following command to install the necessary npm packages.
 
@@ -43,13 +39,13 @@ This command will concurrently install the necessary npm packages for both backe
 
 ### Migrating the database
 
-Make sure you have your database running, or use the dockerized one in the main directory using `docker-compose up`.
+Make sure you have your database running.
 You need to create `.env` file in `backend` directory and populate it by following `.env.example` file. </br>
 
 Next change the directory from main folder to
 
 ```
-cd ./backend/src
+cd ./backend
 ```
 
 And run the following two commands

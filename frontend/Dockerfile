@@ -1,23 +1,19 @@
-# Use the official Node.js 14 image as the base
+# Pull Docker Hub base image
 FROM node:lts
 
-# Set the working directory in the container
-WORKDIR /app
+# Set working directory
+WORKDIR /client
 
-# Copy the package.json and package-lock.json files to the container
-COPY package*.json ./
+COPY . /client/
 
-# Install the project dependencies
-RUN npm install
+# Install app dependencies
+COPY package*.json /client/
+RUN npm install --legacy-peer-deps --silent
+RUN npm install --location=global --save serve
 
-# Copy the rest of the application code to the container
-COPY . .
-
-# Build the application
 RUN npm run build
 
-# Expose the port on which the application will run
-EXPOSE 3000
+# Copy app to container
+COPY . /client/
 
-# Start the application
-CMD [ "npm", "start" ]
+EXPOSE 3000
