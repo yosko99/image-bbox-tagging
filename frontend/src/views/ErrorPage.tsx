@@ -15,7 +15,9 @@ const ErrorPage = () => {
           variant="danger"
         >
           <BiSolidErrorAlt color="red" size={150} />
-          <p className="display-5">Something went wrong</p>
+          <p className="display-5 text-center">
+            Something went wrong, or you are not supposed to be here
+          </p>
         </Alert>
       </Container>
     </>

@@ -21,6 +21,8 @@ The project
 
 In the main directory run `docker-compose build`, after the build is done run `docker-compose up` , it should do the work for you. Access the app on `http://localhost:3000`
 
+> If you get error after running `docker-compose up` on the first try, stop it and try again.
+
 ## Instructions (without Docker)
 
 After cloning the repository go to the main directory and run the following command to install the necessary npm packages.

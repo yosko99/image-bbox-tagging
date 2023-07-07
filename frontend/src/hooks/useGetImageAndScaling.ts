@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai';
 import useImage from 'use-image';
 
-import { canvasHeightAtom, canvasWidthAtom } from '../atoms/canvasSizes';
+import { canvasHeightAtom, canvasWidthAtom } from '../atoms/canvasSizes.atom';
 import { PUBLIC_IMAGES_PREFIX } from '../constants/apiRoutes';
 
 const useGetImageAndScaling = (imageURL: string) => {

@@ -2,29 +2,22 @@
 import React, { useState } from 'react';
 
 import axios from 'axios';
-import { Stage } from 'konva/lib/Stage';
+import { useAtom } from 'jotai';
 import { Button, Form } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
 
+import { currentTagAtom } from '../../atoms/currentTag.atom';
+import { hiddenCanvasRefAtom } from '../../atoms/hiddenCanvasRef.atom';
+import { labelsAtom } from '../../atoms/labels.atom';
 import { getCompleteTagRoute } from '../../constants/apiRoutes';
 import defaultTagValues from '../../data/defaultTagValue';
 import fillFormDataWithLabelInfo from '../../functions/fillFormDataWithLabelInfo';
-import ILabel from '../../interfaces/Ilabel';
-import { ITag } from '../../interfaces/ITag';
 
-interface Props {
-  labels: ILabel[];
-  hiddenCanvasRef: React.RefObject<Stage>;
-  id: string;
-  setCurrentTag: React.Dispatch<React.SetStateAction<ITag>>;
-}
+const CompleteLabelingForm = () => {
+  const [currentTag, setCurrentTag] = useAtom(currentTagAtom);
+  const [hiddenCanvasRef] = useAtom(hiddenCanvasRefAtom);
 
-const CompleteLabelingForm = ({
-  labels,
-  id,
-  hiddenCanvasRef,
-  setCurrentTag
-}: Props) => {
+  const [labels] = useAtom(labelsAtom);
   const [message, setMessage] = useState('');
   const queryClient = useQueryClient();
 
@@ -34,7 +27,7 @@ const CompleteLabelingForm = ({
     if (labels.length === 0) {
       window.alert('First label something.');
     } else {
-      fetch(hiddenCanvasRef.current!.toDataURL())
+      fetch(hiddenCanvasRef.toDataURL())
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], 'File name.jpg', {
@@ -44,10 +37,12 @@ const CompleteLabelingForm = ({
           const formData = new FormData(e.target as HTMLFormElement);
           fillFormDataWithLabelInfo(formData, file, labels, message);
 
-          axios.post(getCompleteTagRoute(id), formData).then((response) => {
-            queryClient.refetchQueries();
-            setCurrentTag(defaultTagValues);
-          });
+          axios
+            .post(getCompleteTagRoute(currentTag.id), formData)
+            .then((response) => {
+              queryClient.refetchQueries();
+              setCurrentTag(defaultTagValues);
+            });
         });
     }
   };

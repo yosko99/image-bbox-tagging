@@ -1,14 +1,17 @@
 import React from 'react';
 
+import { useAtom } from 'jotai';
+
+import { labelsAtom } from '../../atoms/labels.atom';
 import useGetImageAndScaling from '../../hooks/useGetImageAndScaling';
-import ILabel from '../../interfaces/Ilabel';
 
 interface Props {
-  labels: ILabel[];
   imageURL: string;
 }
 
-const AnnotationBox = ({ labels, imageURL }: Props) => {
+const AnnotationBox = ({ imageURL }: Props) => {
+  const [labels] = useAtom(labelsAtom);
+
   const { scaleX, scaleY } = useGetImageAndScaling(imageURL);
 
   return (

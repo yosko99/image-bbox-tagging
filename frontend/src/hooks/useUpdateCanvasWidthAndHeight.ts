@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useAtom } from 'jotai';
 
-import { canvasHeightAtom, canvasWidthAtom } from '../atoms/canvasSizes';
+import { canvasHeightAtom, canvasWidthAtom } from '../atoms/canvasSizes.atom';
 
 const useUpdateCanvasWidthAndHeight = (parentWidth: number) => {
   const [canvasWidth, setCanvasWidth] = useAtom(canvasWidthAtom);

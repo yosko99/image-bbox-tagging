@@ -1,24 +1,22 @@
 import React from 'react';
 
 import axios from 'axios';
+import { useAtom } from 'jotai';
 import { Button } from 'react-bootstrap';
 import { useQueryClient } from 'react-query';
 
+import { currentTagAtom } from '../../atoms/currentTag.atom';
 import { getProcessingTagByIDRoute } from '../../constants/apiRoutes';
 import defaultTagValues from '../../data/defaultTagValue';
-import { ITag } from '../../interfaces/ITag';
 
-interface Props {
-  id: string;
-  setCurrentTag: React.Dispatch<React.SetStateAction<ITag>>;
-}
+const BrokenImageButton = () => {
+  const [currentTag, setCurrentTag] = useAtom(currentTagAtom);
 
-const BrokenImageButton = ({ id, setCurrentTag }: Props) => {
   const queryClient = useQueryClient();
 
   const handleClick = () => {
     if (window.confirm('Are you sure you want to delete this image?')) {
-      axios.delete(getProcessingTagByIDRoute(id)).then((_data) => {
+      axios.delete(getProcessingTagByIDRoute(currentTag.id)).then((_data) => {
         queryClient.refetchQueries();
         setCurrentTag(defaultTagValues);
       });
@@ -26,7 +24,11 @@ const BrokenImageButton = ({ id, setCurrentTag }: Props) => {
   };
 
   return (
-    <Button variant="danger" disabled={id === ''} onClick={handleClick}>
+    <Button
+      variant="danger"
+      disabled={currentTag.id === ''}
+      onClick={handleClick}
+    >
       Broken
     </Button>
   );

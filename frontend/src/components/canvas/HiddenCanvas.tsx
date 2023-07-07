@@ -1,29 +1,37 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useAtom } from 'jotai';
 import { Stage } from 'konva/lib/Stage';
 import { Image, Layer, Rect, Stage as CanvasStage, Text } from 'react-konva';
 
-import { canvasWidthAtom } from '../../atoms/canvasSizes';
+import { canvasWidthAtom } from '../../atoms/canvasSizes.atom';
+import { hiddenCanvasRefAtom } from '../../atoms/hiddenCanvasRef.atom';
+import { labelsAtom } from '../../atoms/labels.atom';
 import useGetImageAndScaling from '../../hooks/useGetImageAndScaling';
-import ILabel from '../../interfaces/Ilabel';
+
 interface Props {
-  labels: ILabel[];
   imageURL: string;
-  hiddenCanvasRef: React.RefObject<Stage>;
 }
 
-const HiddenCanvas = ({ labels, imageURL, hiddenCanvasRef }: Props) => {
-  const { image, scaleX, scaleY } = useGetImageAndScaling(imageURL);
+const HiddenCanvas = ({ imageURL }: Props) => {
+  const [hiddenCanvasRef, setHiddenCanvasRef] = useAtom(hiddenCanvasRefAtom);
   const [canvasWidth] = useAtom(canvasWidthAtom);
+  const [labels] = useAtom(labelsAtom);
+
+  const { image, scaleX, scaleY } = useGetImageAndScaling(imageURL);
+  const canvasRef = useRef<Stage>(null);
 
   const baseFontSize = 30;
   const dynamicFontSize = Math.round(baseFontSize * (canvasWidth / 1000));
 
+  useEffect(() => {
+    setHiddenCanvasRef(canvasRef.current);
+  }, []);
+
   return (
     <CanvasStage
       className="d-none"
-      ref={hiddenCanvasRef}
+      ref={canvasRef}
       width={image?.width}
       height={image?.height}
     >

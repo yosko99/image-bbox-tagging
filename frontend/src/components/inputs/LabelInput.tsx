@@ -1,13 +1,13 @@
 import React from 'react';
 
+import { useAtom } from 'jotai';
 import { Form } from 'react-bootstrap';
 
-interface Props {
-  selectedLabel: string;
-  setSelectedLabel: React.Dispatch<React.SetStateAction<string>>;
-}
+import { selectedLabelAtom } from '../../atoms/selectedLabel.atom';
 
-const LabelInput = ({ setSelectedLabel, selectedLabel }: Props) => {
+const LabelInput = () => {
+  const [selectedLabel, setSelectedLabel] = useAtom(selectedLabelAtom);
+
   const handleChange = (e: unknown) => {
     const value = ((e as HTMLFormElement).target as unknown as HTMLInputElement)
       .value;
