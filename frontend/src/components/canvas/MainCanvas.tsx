@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useAtom } from 'jotai';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Stage } from 'konva/lib/Stage';
 import {
@@ -12,7 +13,7 @@ import {
 } from 'react-konva';
 
 import HiddenCanvas from './HiddenCanvas';
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../../constants/canvasSize';
+import { canvasHeightAtom, canvasWidthAtom } from '../../atoms/canvasSizes';
 import generateUniqueId from '../../functions/generateUniqueId';
 import useGetImageAndScaling from '../../hooks/useGetImageAndScaling';
 import ILabel from '../../interfaces/Ilabel';
@@ -34,6 +35,8 @@ const MainCanvas = ({
 }: Props) => {
   const [newLabel, setNewLabel] = useState<ILabel[]>([]);
   const mainCanvasRef = useRef<Stage>(null);
+  const [canvasWidth] = useAtom(canvasWidthAtom);
+  const [canvasHeight] = useAtom(canvasHeightAtom);
 
   const mouseX = useRef(0);
   const mouseY = useRef(0);
@@ -129,11 +132,11 @@ const MainCanvas = ({
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
+        width={canvasWidth}
+        height={canvasHeight}
       >
         <Layer>
-          <Image width={CANVAS_WIDTH} height={CANVAS_HEIGHT} image={image} />
+          <Image width={canvasWidth} height={canvasHeight} image={image} />
           {labelsToDraw.map((value, index) => {
             return (
               <React.Fragment key={index}>

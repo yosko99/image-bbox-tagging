@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { useAtom } from 'jotai';
 import { Stage } from 'konva/lib/Stage';
 import { Image, Layer, Rect, Stage as CanvasStage, Text } from 'react-konva';
 
-import { CANVAS_WIDTH } from '../../constants/canvasSize';
+import { canvasWidthAtom } from '../../atoms/canvasSizes';
 import useGetImageAndScaling from '../../hooks/useGetImageAndScaling';
 import ILabel from '../../interfaces/Ilabel';
 interface Props {
@@ -14,9 +15,10 @@ interface Props {
 
 const HiddenCanvas = ({ labels, imageURL, hiddenCanvasRef }: Props) => {
   const { image, scaleX, scaleY } = useGetImageAndScaling(imageURL);
+  const [canvasWidth] = useAtom(canvasWidthAtom);
 
   const baseFontSize = 30;
-  const dynamicFontSize = Math.round(baseFontSize * (CANVAS_WIDTH / 1000));
+  const dynamicFontSize = Math.round(baseFontSize * (canvasWidth / 1000));
 
   return (
     <CanvasStage

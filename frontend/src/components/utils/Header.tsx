@@ -1,7 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { Button } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+
+import CustomModal from './CustomModal';
+import UploadImageForm from '../forms/UploadImageForm';
 
 interface Props {
   children?: ReactNode;
@@ -13,27 +16,39 @@ const Header = ({ children }: Props) => {
   const pathname = window.location.pathname;
 
   return (
-    <div className="bg-dark w-100 text-white d-flex align-items-center py-2 justify-content-between px-3 fs-3 m-0">
-      <div className="d-flex">
-        <p className="m-0">Image bbox tagging</p>
-        <Button
-          variant="info"
-          disabled={pathname === '/'}
-          className="mx-3"
-          onClick={() => navigate('/')}
-        >
-          Label images
-        </Button>
-        <Button
-          variant="info"
-          disabled={pathname === '/labeled-images'}
-          onClick={() => navigate('/labeled-images')}
-        >
-          See labeled images
-        </Button>
-      </div>
-      {children}
-    </div>
+    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary mb-0 py-3">
+      <Navbar.Brand className="ms-5 me-0">Image bbox tagging</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="me-auto ps-5">
+          <Nav.Link
+            disabled={pathname === '/'}
+            className={pathname === '/' ? 'text-dark' : ''}
+            onClick={() => navigate('/')}
+          >
+            Home
+          </Nav.Link>
+          <Nav.Link
+            disabled={pathname === '/labeled-images'}
+            className={pathname === '/labeled-images' ? 'text-dark' : ''}
+            onClick={() => navigate('/labeled-images')}
+          >
+            Labeled images
+          </Nav.Link>
+        </Nav>
+        <Nav>
+          <Nav>
+            {children}{' '}
+            <CustomModal
+              activateButtonClassName="mx-5 mb-3"
+              activateButtonText="Upload image"
+              body={<UploadImageForm />}
+              title="Upload image"
+            />
+          </Nav>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   );
 };
 

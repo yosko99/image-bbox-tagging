@@ -6,9 +6,15 @@ interface Props {
   activateButtonText: string;
   title: string;
   body: React.ReactNode;
+  activateButtonClassName?: string;
 }
 
-const CustomModal = ({ activateButtonText, body, title }: Props) => {
+const CustomModal = ({
+  activateButtonText,
+  body,
+  title,
+  activateButtonClassName
+}: Props) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -16,7 +22,11 @@ const CustomModal = ({ activateButtonText, body, title }: Props) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button
+        variant="primary"
+        className={activateButtonClassName}
+        onClick={handleShow}
+      >
         {activateButtonText}
       </Button>
 

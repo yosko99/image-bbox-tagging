@@ -28,7 +28,7 @@ const SortButtons = ({ setTags, setAreTagsSorted }: Props) => {
   };
 
   return (
-    <div className="d-flex">
+    <div className="d-flex align-items-center mb-3 justify-content-center">
       <p className="m-0">Sort by:</p>
       <p
         className={`m-0 ms-5 ${
